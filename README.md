@@ -1,5 +1,5 @@
 # assignment2 - Modifying instruction behavior in KVM
-assignment2 CMPE283
+Assignment2 CMPE283
 
 Student Contribution
 
