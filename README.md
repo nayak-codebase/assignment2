@@ -146,15 +146,19 @@ Comment on the frequency of exits – does the number of exits increase at a sta
 
 VM exits increases at a stable rate if vm operations are not performed and only by using the sleep command.
 The value of exits increase by 270 every 10 secs.
+
 ![](images/Picture9.png)
 
 The value of exits increase by 500 every 60 secs.
+
 ![](images/Pciture10.png)
 
 More exits were noticed when vm operations such as opening a folder , opening a file , playing a radio , the exits were above 4000 after the vm operations were performed.
+
 ![](images/Picture11.png)
 
 Full vm exits were identified by executing the shell script immediately after logging in to the inner vm shell.The total exits recorded was 747089.
+
 ![](images/Picture6.png)
 
 
