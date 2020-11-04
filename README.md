@@ -77,13 +77,15 @@ uname -a
   Steps followed for installing KVM on Ubuntu 20.0.4
 
 1.First check if virtualization is supported
+	egrep -c '(vmx|svm)' /proc/cpuinfo
 
-![](images/Picture3.png)
 
 
 2.Check if system supports KVM virtualization
+	sudo kvm-ok
 
-![](images/Picture4.png)
+output :
+![](images/Picture3.png)
 
 
 3.Referred the below link to Install KVM and virt manager on ubuntu 
@@ -93,7 +95,11 @@ https://help.ubuntu.com/community/KVM/VirtManager
 a.Launch virt manager
 sudo virt-manager
 
+![](images/Picture4.png)
+
 b.Click the monitor icon, Select local install media ,Choose the iso image from local, Choose memory and number of CPU’s
+
+![](images/Picture5.png)
 
 For the assignment the kernel code files changed are as below. These need to be done on the host machine
 
@@ -109,7 +115,6 @@ sudo insmod arch/x86/kvm/kvm.ko
 sudo insmod arch/x86/kvm/kvm-intel.ko
 
 2.Start the guest VM using virt-manager command
-
 3.Create a shell script file as below
 
 !#/bin/bash
@@ -126,25 +131,31 @@ echo "CPUID($cpuid), exits=$exits, cycles spent in exit=$cycles"
  Output:
 Contains the number of exits and number of cpu cycles
 
-
+![](images/Picture6.png)
 
 Dmesg on host VM
 Return the total number of exits (all types) in %eax
 Return the high 32 bits of the total time spent processing all exits in %ebx
 Return the low 32 bits of the total time spent processing all exits in %ecx
 
+![](images/Picture8.png)
+
 
 Comment on the frequency of exits – does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? Approximately how many exits does a full VM boot entail?
 
 
-VM exits increases at a stable rate if vm operations are not performed and only by using the sleep command the value of exits increase by 270 every 10 secs.
+VM exits increases at a stable rate if vm operations are not performed and only by using the sleep command.
+The value of exits increase by 270 every 10 secs.
+![](images/Picture9.png)
 
+The value of exits increase by 500 every 60 secs.
+![](images/Picture10.png)
 
 More exits were noticed when vm operations such as opening a folder , opening a file , playing a radio , the exits were above 7000 after the vm operations were performed.
-
+![](images/Picture11.png)
 
 Full vm exits were identified by executing the shell script immediately after logging in to the inner vm shell.The total exits recorded was 747089.
-
+![](images/Picture6.png)
 
 
 
