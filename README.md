@@ -1,4 +1,4 @@
-# assignment2 - Modifying instruction behavior in KVM
+# Assignment2 - Modifying instruction behavior in KVM
 Assignment2 CMPE283
 
 Student Contribution
