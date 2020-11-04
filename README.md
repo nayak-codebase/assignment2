@@ -85,6 +85,7 @@ uname -a
 	sudo kvm-ok
 
 output :
+
 ![](images/Picture3.png)
 
 
