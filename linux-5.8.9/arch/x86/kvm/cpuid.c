@@ -30,6 +30,8 @@
  */
 u32 kvm_cpu_caps[NCAPINTS] __read_mostly;
 EXPORT_SYMBOL_GPL(kvm_cpu_caps);
+//Start Changes for assignment3
+static atomic_t exits_per_rsn[69];
 
 //start changes for assignment 2
 static atomic_t no_of_exits;
@@ -1049,31 +1051,99 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
 }
 EXPORT_SYMBOL_GPL(kvm_cpuid);
 
+int leafcount=0;
+int kvm_emulate_cpuid(struct kvm_vcpu *vcpu) {
+  u32 eax, ebx, ecx, edx;
+  
+  //int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 
-int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
-{
-	u32 eax, ebx, ecx, edx;
-	//int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
+  if (cpuid_fault_enabled(vcpu) && !kvm_require_cpl(vcpu, 0))
+    return 1; 
+    
+  eax = atomic_read(&no_of_exits);
+  ecx = kvm_rcx_read(vcpu);
 
-	if (cpuid_fault_enabled(vcpu) && !kvm_require_cpl(vcpu, 0))
-		return 1;
+  printk("Current Exit Reason for All : %d", (int) ecx);
+  printk("Total Exit Count Value for All : %d", (int) eax);
 
-	eax = kvm_rax_read(vcpu);
-	ecx = kvm_rcx_read(vcpu);
-	if (eax==0x4FFFFFFF)
-			{
-			eax = atomic_read(&no_of_exits);
-			ebx = ((atomic64_read(&no_of_cycles) >> 32));
-			ecx = ((atomic64_read(&no_of_cycles) & 0xFFFFFFFF));
-			printk ("Total exits into EAX: %u \n, Upper 32bits in EBX: %u \n, Lower 32bits in ECX: %u \n", eax,ebx,ecx);
-			}
-			else{
-			kvm_cpuid (vcpu, &eax, &ebx, &ecx, &edx, true);
-			}
-	kvm_rax_write(vcpu, eax);
-	kvm_rbx_write(vcpu, ebx);
-	kvm_rcx_write(vcpu, ecx);
-	kvm_rdx_write(vcpu, edx);
-	return kvm_skip_emulated_instruction(vcpu);
+         //printk("EXIT_REASON_0 : %d , ExitCount : %u\n", ecx, eax);
+    // eax = atomic_read(&exits_per_rsn[(int)ecx]);
+  //	if((int)eax == 0){
+   //   printk("Exit Reason Number : %d", (int) ecx);
+    //  eax = atomic_read(&exits_per_rsn[(int)ecx]);
+      //printk("EXIT REASON  : %d , ExitCount : %d\n", (int)ecx,(int)eax);
+		//}
+		
+  eax = kvm_rax_read(vcpu);
+
+  if (eax == 0x4FFFFFFF) {
+    eax = atomic_read(&no_of_exits);
+    ebx = ((atomic64_read(&no_of_cycles) >> 32));
+    ecx = ((atomic64_read(&no_of_cycles) & 0xFFFFFFFF));
+    printk("Total exits into EAX: %u \n, Upper 32bits in EBX: %u \n, Lower 32bits in ECX: %u \n", eax, ebx, ecx);
+  } else if (eax == 0x4FFFFFFE) {
+  				leafcount++;
+  	  printk("Total Exit in leaf 0x4FFFFFFE: %d \n",leafcount);
+      eax = atomic_read(&no_of_exits);
+    
+
+    if (ecx < 0 || ecx > 68 || ecx == 4 || ecx == 5 || ecx == 6 || ecx == 11 || ecx == 17 || ecx == 66) {
+       //For KVM exit types not enabled (https://github.com/nayak-codebase/assignment2/blob/master/linux-5.8.9/arch/x86/include/uapi/asm/vmx.h)
+      kvm_rax_write(vcpu, 0);
+      kvm_rbx_write(vcpu, 0);
+      kvm_rcx_write(vcpu, 0);
+      kvm_rdx_write(vcpu, 0);
+         eax = atomic_read(&exits_per_rsn[(int)ecx]);
+          printk("KVM NOT ENABLED EXIT REASON: %d , ExitCount : %d\n", (int)ecx,(int)eax);
+
+         	//printk("EXIT_REASON_1 : %d , ExitCount : %u\n", ecx, eax);
+           // printk("EXIT_REASON_2 : %d , ExitCount : %u\n", (int) ecx, eax);
+
+    } else if(ecx == 35 || ecx == 38 || ecx == 42 || ecx == 65 ){
+      //For SDM exit types not enabled APPENDIX C - Vol 3D C1
+      kvm_rax_write(vcpu, 0);
+      kvm_rbx_write(vcpu, 0);
+      kvm_rcx_write(vcpu, 0);
+      kvm_rdx_write(vcpu, 0xFFFFFFFF);
+         	 eax = atomic_read(&exits_per_rsn[(int)ecx]);
+          printk("SDM NOT ENABLED EXIT REASON : %d , ExitCount : %d\n",(int)ecx,(int) eax);
+
+         	//printk("EXIT_REASON_3 : %d , ExitCount : %u\n", ecx, eax);
+            //printk("EXIT_REASON_4 : %d , ExitCount : %u\n", (int) ecx, eax);
+
+    } else{
+      //For KVM/SDM exit types enabled		
+   	 kvm_rax_write(vcpu, atomic_read(&exits_per_rsn[(int)ecx]));
+   	 //printk("EXIT_REASON_5 : %d , ExitCount : %u\n", ecx, eax);
+        eax = atomic_read(&exits_per_rsn[(int)ecx]);
+    printk("KVM SDM ENABLED EXIT REASON : %d , ExitCount : %d\n", (int)ecx,(int)eax);
+    }
+    
+    
+  }
+else {
+  kvm_cpuid(vcpu, & eax, & ebx, & ecx, & edx, true);
 }
+kvm_rax_write(vcpu, eax);
+kvm_rbx_write(vcpu, ebx);
+kvm_rcx_write(vcpu, ecx);
+kvm_rdx_write(vcpu, edx);
+//printk("EXIT_REASON_COMMON : %d , ExitCount : %d\n", (int) ecx, (int) eax);
+return kvm_skip_emulated_instruction(vcpu);
+}
+
+//added for assignmesnt 3
+void add_exit_time_per_rsn(u32 exit_reason){
+u32 eax;
+    	//printk("Before IF");
+    if(exit_reason >= 0 && exit_reason < 69){    
+        //printk("Inside IF %d \n", (int)exit_reason);
+        atomic_inc(&exits_per_rsn[(int)exit_reason]);
+        eax = atomic_read(&exits_per_rsn[(int)exit_reason]);
+    	//printk("After Increment : %d \n",(int)eax);
+
+    }
+}
+
 EXPORT_SYMBOL_GPL(kvm_emulate_cpuid);
+EXPORT_SYMBOL_GPL(add_exit_time_per_rsn); //added for assignment 3

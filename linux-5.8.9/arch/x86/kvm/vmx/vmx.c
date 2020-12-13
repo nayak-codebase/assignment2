@@ -5960,6 +5960,8 @@ void dump_vmcs(void)
 
 
 
+//extern atomic_t exits_per_rsn[69]; commented for assignment 3
+void add_exit_time_per_rsn(u32 exit_reason); //added for assignment3
 
 /*
  * The guest has exited.  See if we can fix it or if we need userspace
@@ -6109,7 +6111,10 @@ static int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 	end_time = rdtsc();
 	atomic64_add(end_time - begin_time,&no_of_cycles);
 	atomic_inc(&no_of_exits);
-	return exit_cnt;
+	//atomic_inc(&exits_per_rsn[(int)exit_reason]);   -- commented for assignment3
+	add_exit_time_per_rsn(exit_reason); //added for assignment3
+
+	return exit_cnt;// For Assignment 3
 	
 	}
 //end of addition for assignment 2
