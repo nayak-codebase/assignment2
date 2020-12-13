@@ -49,8 +49,8 @@ with ept=1 count for exit reason 0,10,31
 
 	Since with ept-0 shadow paging was enabled the count of exits increased as described in the lecture 7.
   
-Total Number of exits with ept-0 - 888084
-Total Number of exits with ept-1 - 866840
+Total Number of exits with ept-0 - 1761485
+Total Number of exits with ept-1 - 1569163
 
 ![](images/Total_VM_EXIT_On_Boot-EPT0.png)
 ![](images/Total_VM_EXIT_On_Boot-EPT1.png)
