@@ -52,7 +52,12 @@ with ept=1 count for exit reason 0,10,31
 Total Number of exits with ept-0 - 1761485
 Total Number of exits with ept-1 - 1569163
 
+Total Number of exits with ept-0 - 1761485
+=====
 ![](images/Total_VM_EXIT_On_Boot-EPT0.png)
+
+Total Number of exits with ept-1 - 1569163
+=====
 ![](images/Total_VM_EXIT_On_Boot-EPT1.png)
 
 > **Question :** 
