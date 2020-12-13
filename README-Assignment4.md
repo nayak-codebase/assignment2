@@ -28,14 +28,14 @@ We were able to infer that as expected , ept-0 exit count increased.
 
 > **Answer :** 
 
-with ept=0 count for exit reason 0,10,31
-=====
+> **with ept=0 count for exit reason 0,10,31**
+
 ![](images/EPT-0-0.png)
 ![](images/EPT-0-10.png)
 ![](images/EPT-0-31.png)
 
-with ept=1 count for exit reason 0,10,31
-=====
+> **with ept=1 count for exit reason 0,10,31**
+
 ![](images/EPT-1-0.png)
 ![](images/EPT-1-10.png)
 ![](images/EPT-1-31.png)
