@@ -82,9 +82,10 @@ Of the exit types defined in the SDM, which are the most frequent? Least?
 
 > **Answer :** 
 
-Most frequent exit types that were observed are 0 and 10 and least were 63 and 64.
+Most frequent exit types that were observed are 48,30,10,28,0,31,40 and 46 in increasing order and least were the rest which had a count value 0
 
-![](images/Max_Min_Exits_Observed.png)
+![](images/Max_Exit_Occurences_1.png)
+![](images/Max_Exit_Occurences_2.png)
 
 
 
