@@ -1,5 +1,5 @@
-# Assignment 3: Instrumentation via hypercall
-Assignment3 CMPE283
+# Assignment 4: Nested Paging vs. Shadow Paging
+Assignment4 CMPE283
 
 Student Contribution
 
@@ -11,7 +11,10 @@ Yadnyshree Savant
 
 > **Answer :** 
 
-Executed the command from the linux kernel with ept -0.
+Executed the command from the linux kernel with ept -0.  
+
+![](images/command_ept0.png)
+
 Took the readings from dmesg.
 
 
