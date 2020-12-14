@@ -15,11 +15,11 @@ Report back information as per the requirement
 > **Answer :** 
 
 Created a new leaf eax == 0x4FFFFFFE with 3 if conditions
-	 1. For KVM exit types not enabled 
-	 		reference (https://github.com/nayak-codebase/assignment2/blob/master/linux-5.8.9/arch/x86/include/uapi/asm/vmx.h)
-	 2. For SDM exit types not enabled 
-	 		reference APPENDIX C - Vol 3D C1 of SDM.
-	 3. For KVM/SDM exit types enabled	
+	 1. For KVM exit types not enabled.  
+	 		reference (https://github.com/nayak-codebase/assignment2/blob/master/linux-5.8.9/arch/x86/include/uapi/asm/vmx.h). 
+	 2. For SDM exit types not enabled. 
+	 		reference APPENDIX C - Vol 3D C1 of SDM.  
+	 3. For KVM/SDM exit types enabled. 	
 	 
 	 For each of the above conditions exit reason and exit count is printed for dmesg.
 
@@ -82,7 +82,7 @@ Of the exit types defined in the SDM, which are the most frequent? Least?
 
 > **Answer :** 
 
-Most frequent exit types that were observed are 48,30,10,28,0,31,40 and 46 in increasing order and least were the rest which had a count value 0
+Most frequent exit types that were observed are 48,30,10,28,0,31,40 and 46 in decreasing order and least were the rest which had a count value 0
 
 ![](images/Max_Exit_Occurences_1.png)
 ![](images/Max_Exit_Occurences_2.png)
