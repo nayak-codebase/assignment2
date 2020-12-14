@@ -67,6 +67,7 @@ Total Number of exits with ept-1 - 1569163
 > **Answer :** 
 With no-ept (ept=1) nested paging is enabled and hence less number of exits.
 With ept (ept=0) shadow paging gets enabled and hence more number of exits.
+MOV to and from CR3 causes an exit and we have to enable exit on TLB flush as well in shadow paging and hence more exits than nested paging.
 
 
 
